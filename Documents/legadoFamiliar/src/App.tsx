@@ -592,8 +592,8 @@ function HomePage({
             ✦ Uma história para sempre ✦
           </p>
           <h1 className="font-serif text-6xl md:text-8xl text-cream mb-4 leading-none">
-            Legado da<br />
-            <span className="italic text-beige">Família</span>
+            Família<br />
+            <span className="italic text-beige"> Pereira Maia</span>
           </h1>
           <p className="font-serif text-xl md:text-2xl text-cream/80 italic mb-10">
             "Uma história construída por muitas gerações."
