@@ -1,0 +1,173 @@
+import type { Person, Relationship, Photo, Memory, FamilyEvent } from "@/src/types";
+
+export const INIT_PEOPLE: Person[] = [
+  {
+    id: 1, name: "Antônio", fullName: "Antônio Carlos Silva",
+    birthDate: "1920-03-15", birthPlace: "São Paulo, SP",
+    deathDate: "2005-11-20", deathPlace: "São Paulo, SP",
+    biography: "Patriarca da família Silva. Nascido em tempos difíceis, construiu sua vida com muito trabalho e dedicação. Foi agricultor e depois comerciante, sempre colocando a família em primeiro lugar. Homem de poucas palavras mas gestos imensos, era o pilar que sustentava todos ao redor.",
+    profession: "Comerciante", residence: "São Paulo, SP",
+    generation: 1, isAlive: false,
+    photoUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&auto=format",
+  },
+  {
+    id: 2, name: "Maria", fullName: "Maria das Graças Santos Silva",
+    nickname: "Dona Maria",
+    birthDate: "1922-06-08", birthPlace: "Campinas, SP",
+    deathDate: "2010-04-30", deathPlace: "São Paulo, SP",
+    biography: "Matriarca da família, conhecida por sua sabedoria e hospitalidade. Seu lar era sempre aberto a todos. Excelente cozinheira e contadora de histórias, mantinha viva a memória da família. Seus olhos tinham o brilho de quem viveu muito e amou ainda mais.",
+    profession: "Dona de casa", residence: "São Paulo, SP",
+    generation: 1, isAlive: false,
+    photoUrl: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop&auto=format",
+  },
+  {
+    id: 3, name: "João", fullName: "João Antônio Silva",
+    birthDate: "1945-09-12", birthPlace: "São Paulo, SP",
+    deathDate: "2020-02-14",
+    biography: "Primogênito do casal Antônio e Maria. Seguiu os passos do pai no comércio e expandiu os negócios da família. Casou-se com Luísa em 1968 e tiveram três filhos. Homem generoso e trabalhador, era o elo entre as gerações mais velhas e as mais novas.",
+    profession: "Empresário", residence: "São Paulo, SP",
+    generation: 2, isAlive: false,
+    photoUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&auto=format",
+  },
+  {
+    id: 4, name: "Ana", fullName: "Ana Maria Silva Ferreira",
+    birthDate: "1948-12-25", birthPlace: "São Paulo, SP",
+    biography: "Segunda filha do casal. Formou-se em pedagogia e dedicou sua vida à educação. Professora por mais de 40 anos, tocou a vida de centenas de crianças. Ainda hoje, seus antigos alunos a procuram com carinho.",
+    profession: "Professora aposentada", residence: "Campinas, SP",
+    generation: 2, isAlive: true,
+    photoUrl: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&auto=format",
+  },
+  {
+    id: 5, name: "José", fullName: "José Roberto Silva",
+    nickname: "Zé",
+    birthDate: "1950-07-04", birthPlace: "São Paulo, SP",
+    deathDate: "1998-08-15",
+    biography: "O caçula da família. Artista e músico talentoso, José tocava violão e compunha canções que emocionavam a todos. Faleceu precocemente, mas sua música e seu riso permanecem vivos na memória de quem o conheceu.",
+    profession: "Músico", residence: "Rio de Janeiro, RJ",
+    generation: 2, isAlive: false,
+    photoUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&auto=format",
+  },
+  {
+    id: 6, name: "Carlos", fullName: "Carlos Eduardo Silva",
+    birthDate: "1970-05-20", birthPlace: "São Paulo, SP",
+    biography: "Filho de João, formou-se em engenharia civil. Trabalha em grandes projetos de infraestrutura pelo Brasil. Carrega o espírito empreendedor do avô Antônio, mas com a visão das novas gerações.",
+    profession: "Engenheiro Civil", residence: "Brasília, DF",
+    generation: 3, isAlive: true,
+    photoUrl: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop&auto=format",
+  },
+  {
+    id: 7, name: "Fernanda", fullName: "Fernanda Silva Costa",
+    birthDate: "1972-11-08", birthPlace: "São Paulo, SP",
+    biography: "Filha de João, médica pediatra, mãe de dois filhos. Vive em São Paulo onde trabalha em hospital público. Herdou a generosidade da avó Maria e a determinação do avô Antônio.",
+    profession: "Médica Pediatra", residence: "São Paulo, SP",
+    generation: 3, isAlive: true,
+    photoUrl: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&h=400&fit=crop&auto=format",
+  },
+  {
+    id: 8, name: "Pedro", fullName: "Pedro Henrique Ferreira",
+    birthDate: "1975-03-30", birthPlace: "Campinas, SP",
+    biography: "Filho de Ana, advogado especializado em direito de família. Apaixonado por história, foi quem iniciou o projeto de documentar o Legado da Família, para que as próximas gerações conheçam suas raízes.",
+    profession: "Advogado", residence: "Campinas, SP",
+    generation: 3, isAlive: true,
+    photoUrl: "https://images.unsplash.com/photo-1463453091185-61582044d556?w=400&h=400&fit=crop&auto=format",
+  },
+];
+
+export const INIT_RELATIONSHIPS: Relationship[] = [
+  { id: 1, personId: 1, relatedPersonId: 2, type: "esposo" },
+  { id: 2, personId: 2, relatedPersonId: 1, type: "esposa" },
+  { id: 3, personId: 1, relatedPersonId: 3, type: "filho" },
+  { id: 4, personId: 3, relatedPersonId: 1, type: "pai" },
+  { id: 5, personId: 3, relatedPersonId: 2, type: "mãe" },
+  { id: 6, personId: 1, relatedPersonId: 4, type: "filha" },
+  { id: 7, personId: 4, relatedPersonId: 1, type: "pai" },
+  { id: 8, personId: 4, relatedPersonId: 2, type: "mãe" },
+  { id: 9, personId: 1, relatedPersonId: 5, type: "filho" },
+  { id: 10, personId: 5, relatedPersonId: 1, type: "pai" },
+  { id: 11, personId: 5, relatedPersonId: 2, type: "mãe" },
+  { id: 12, personId: 2, relatedPersonId: 3, type: "filho" },
+  { id: 13, personId: 2, relatedPersonId: 4, type: "filha" },
+  { id: 14, personId: 2, relatedPersonId: 5, type: "filho" },
+  { id: 15, personId: 3, relatedPersonId: 6, type: "filho" },
+  { id: 16, personId: 6, relatedPersonId: 3, type: "pai" },
+  { id: 17, personId: 3, relatedPersonId: 7, type: "filha" },
+  { id: 18, personId: 7, relatedPersonId: 3, type: "pai" },
+  { id: 19, personId: 4, relatedPersonId: 8, type: "filho" },
+  { id: 20, personId: 8, relatedPersonId: 4, type: "mãe" },
+  { id: 21, personId: 3, relatedPersonId: 4, type: "irmã" },
+  { id: 22, personId: 4, relatedPersonId: 3, type: "irmão" },
+];
+
+export const INIT_PHOTOS: Photo[] = [
+  {
+    id: 1, title: "Casamento de Antônio e Maria",
+    description: "O grande dia — 15 de outubro de 1942, na Igreja do Carmo, São Paulo.",
+    photoUrl: "https://images.unsplash.com/photo-1519741347686-c1e0aadf4611?w=800&h=600&fit=crop&auto=format",
+    date: "1942-10-15", location: "São Paulo, SP", albumId: 1, personIds: [1, 2],
+  },
+  {
+    id: 2, title: "Família reunida no Natal de 1960",
+    photoUrl: "https://images.unsplash.com/photo-1512389142860-9c449e58a543?w=800&h=600&fit=crop&auto=format",
+    date: "1960-12-25", location: "São Paulo, SP", albumId: 2, personIds: [1, 2, 3, 4, 5],
+  },
+  {
+    id: 3, title: "Antônio em seu comércio",
+    photoUrl: "https://images.unsplash.com/photo-1534126511673-b6899657816a?w=800&h=600&fit=crop&auto=format",
+    date: "1955-06-01", location: "São Paulo, SP", albumId: 3, personIds: [1],
+  },
+  {
+    id: 4, title: "Maria e os filhos pequenos",
+    photoUrl: "https://images.unsplash.com/photo-1581579438747-1dc8d17bbce4?w=800&h=600&fit=crop&auto=format",
+    date: "1958-03-20", location: "São Paulo, SP", albumId: 2, personIds: [2, 3, 4, 5],
+  },
+  {
+    id: 5, title: "Fernanda na formatura de medicina",
+    photoUrl: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&h=600&fit=crop&auto=format",
+    date: "1997-12-10", location: "São Paulo, SP", albumId: 4, personIds: [7],
+  },
+  {
+    id: 6, title: "Pedro e a pesquisa do legado familiar",
+    photoUrl: "https://images.unsplash.com/photo-1542216515-4e6a586c1ca0?w=800&h=600&fit=crop&auto=format",
+    date: "2025-01-20", location: "Campinas, SP", albumId: 4, personIds: [8],
+  },
+];
+
+export const INIT_MEMORIES: Memory[] = [
+  {
+    id: 1, title: "Como os avós se conheceram",
+    content: "Era uma tarde de domingo de 1940 quando Antônio viu Maria pela primeira vez na festa de São João da Vila Madalena. Ele ficou tão encantado que pediu permissão ao pai dela para dançar. \"Seus olhos brilhavam como estrelas\", ele costumava dizer.\n\nDois anos depois, estavam casados na Igreja do Carmo, rodeados pela família e amigos. Maria sempre contava que soube desde aquela primeira dança que ele era o homem certo. \"Era gentil, trabalhador e tinha um sorriso que aquecia o coração.\" Antônio chegou a percorrer mais de 30 km de bicicleta todo domingo para visitá-la antes do casamento.",
+    date: "1940", location: "São Paulo, SP",
+    author: "Pedro Henrique Ferreira", personIds: [1, 2],
+  },
+  {
+    id: 2, title: "A história da nossa primeira casa",
+    content: "Em 1943, com muito sacrifício e a ajuda de amigos e familiares, Antônio e Maria construíram a primeira casa da família no bairro da Lapa. Era pequena, apenas dois quartos, mas cheia de amor e esperança.\n\nAs paredes foram levantadas nos fins de semana por amigos que se revezavam carregando tijolos. Maria preparava marmitas para todos. \"Naquela casa nasceram nossos sonhos e nossos filhos\", dizia ela com orgulho. A casa ainda existe até hoje, habitada por parentes distantes, como um monumento silencioso ao esforço de nossos antepassados.",
+    date: "1943", location: "Lapa, São Paulo, SP",
+    author: "Ana Maria Silva Ferreira", personIds: [1, 2],
+  },
+  {
+    id: 3, title: "Os domingos em família",
+    content: "Todo domingo sem falta, a família se reunia na casa de Dona Maria. O almoço era sempre farto — arroz, feijão, frango assado e aquela macarronada que ela fazia com tanto carinho. As crianças brincavam no quintal enquanto os adultos conversavam na varanda.\n\nJosé sempre trazia o violão e as tardes terminavam em cantoria. \"Esses domingos eram a cola que mantinha a família unida\", recorda Ana. Mesmo depois que os filhos casaram e foram morar em outras cidades, a tradição do almoço dominical durou décadas.",
+    date: "1950–1990", location: "São Paulo, SP",
+    author: "Carlos Eduardo Silva", personIds: [1, 2, 3, 4, 5],
+  },
+];
+
+export const INIT_EVENTS: FamilyEvent[] = [
+  { id: 1,  title: "Nascimento de Antônio Carlos Silva", description: "Nascimento do patriarca da família Silva em São Paulo.", eventDate: "1920-03-15", location: "São Paulo, SP", personIds: [1] },
+  { id: 2,  title: "Nascimento de Maria das Graças", eventDate: "1922-06-08", location: "Campinas, SP", personIds: [2] },
+  { id: 3,  title: "Casamento de Antônio e Maria", description: "O casal se casou na Igreja do Carmo em uma cerimônia emocionante, cercados de família e amigos.", eventDate: "1942-10-15", location: "São Paulo, SP", personIds: [1, 2] },
+  { id: 4,  title: "Construção da primeira casa", description: "Com muito esforço e ajuda de amigos, a família construiu sua primeira casa na Lapa.", eventDate: "1943-05-01", location: "Lapa, São Paulo, SP", personIds: [1, 2] },
+  { id: 5,  title: "Nascimento de João Antônio", eventDate: "1945-09-12", location: "São Paulo, SP", personIds: [3] },
+  { id: 6,  title: "Nascimento de Ana Maria", eventDate: "1948-12-25", location: "São Paulo, SP", personIds: [4] },
+  { id: 7,  title: "Nascimento de José Roberto", eventDate: "1950-07-04", location: "São Paulo, SP", personIds: [5] },
+  { id: 8,  title: "Bodas de Prata de Antônio e Maria", description: "Grande encontro da família para celebrar 25 anos de amor.", eventDate: "1967-10-15", location: "São Paulo, SP", personIds: [1, 2, 3, 4, 5] },
+  { id: 9,  title: "Nascimento de Carlos Eduardo", eventDate: "1970-05-20", location: "São Paulo, SP", personIds: [6] },
+  { id: 10, title: "Nascimento de Fernanda", eventDate: "1972-11-08", location: "São Paulo, SP", personIds: [7] },
+  { id: 11, title: "Nascimento de Pedro Henrique", eventDate: "1975-03-30", location: "Campinas, SP", personIds: [8] },
+  { id: 12, title: "Formatura de Fernanda em Medicina", description: "Fernanda se forma médica pediatra — orgulho de toda a família.", eventDate: "1997-12-10", location: "São Paulo, SP", personIds: [7] },
+  { id: 13, title: "Falecimento de José Roberto", description: "O músico da família partiu prematuramente, mas sua música permanece em nossos corações.", eventDate: "1998-08-15", location: "Rio de Janeiro, RJ", personIds: [5] },
+  { id: 14, title: "Falecimento de Antônio Carlos", description: "O patriarca nos deixou aos 85 anos, depois de uma vida plena e dedicada à família.", eventDate: "2005-11-20", location: "São Paulo, SP", personIds: [1] },
+  { id: 15, title: "Falecimento de Maria das Graças", description: "A matriarca, aos 87 anos, partiu deixando um legado de amor e tradição inestimável.", eventDate: "2010-04-30", location: "São Paulo, SP", personIds: [2] },
+  { id: 16, title: "Criação do Legado da Família", description: "Pedro inicia o projeto de documentar a história da família para as futuras gerações.", eventDate: "2026-01-01", location: "Campinas, SP", personIds: [8] },
+];

@@ -1,0 +1,161 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lato:wght@300;400;700&family=Lato+Italic:ital,wght@1,300;1,400&display=swap');
+@import 'tailwindcss';
+
+@theme {
+  --color-brown-dark: #4A2C20;
+  --color-brown-mid: #795548;
+  --color-caramel: #A67C52;
+  --color-beige: #E8D8C3;
+  --color-cream: #F8F1E7;
+  --color-terracotta: #C9795B;
+  --color-sage: #7A8B68;
+  --color-parchment: #F2E8D9;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans: 'Lato', system-ui, sans-serif;
+}
+
+html, body {
+  min-height: 100%;
+}
+
+body {
+  font-family: 'Lato', system-ui, sans-serif;
+  background-color: #F8F1E7;
+  color: #4A2C20;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #C9795B; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #A67C52; }
+
+/* Typography */
+.font-serif { font-family: 'Playfair Display', Georgia, serif; }
+.font-sans  { font-family: 'Lato', system-ui, sans-serif; }
+
+/* Ornamental divider */
+.ornament {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #A67C52;
+}
+.ornament::before,
+.ornament::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #A67C52, transparent);
+}
+
+/* Card frame with subtle parchment feel */
+.card-frame {
+  background: #FDFAF5;
+  border: 1px solid #E8D8C3;
+  border-radius: 4px;
+  box-shadow: 0 2px 12px rgba(74, 44, 32, 0.06), 0 1px 3px rgba(74, 44, 32, 0.08);
+}
+
+/* Photo frame */
+.photo-frame {
+  border: 3px solid #E8D8C3;
+  outline: 1px solid #C9795B;
+  outline-offset: -6px;
+  box-shadow: 0 4px 16px rgba(74, 44, 32, 0.15);
+}
+
+/* Tree connector lines */
+.tree-connector {
+  position: relative;
+}
+.tree-connector::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 20px;
+  background: #A67C52;
+}
+
+/* Timeline dots */
+.timeline-dot {
+  width: 12px;
+  height: 12px;
+  background: #C9795B;
+  border: 2px solid #F8F1E7;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px #C9795B;
+}
+
+/* Page transitions */
+.page-enter {
+  animation: fadeSlideIn 0.3s ease forwards;
+}
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Book page feel for memories */
+.book-page {
+  background: linear-gradient(135deg, #FDFAF5 0%, #F8F1E7 100%);
+  border-left: 4px solid #A67C52;
+  padding: 2rem 2.5rem;
+  position: relative;
+}
+.book-page::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='4' height='4' fill='%23F8F1E7'/%3E%3Ccircle cx='1' cy='1' r='0.5' fill='%23E8D8C3' fill-opacity='0.4'/%3E%3C/svg%3E");
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Admin table */
+.admin-table th {
+  background: #4A2C20;
+  color: #F8F1E7;
+  padding: 10px 16px;
+  text-align: left;
+  font-family: 'Lato', sans-serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.admin-table td {
+  padding: 10px 16px;
+  border-bottom: 1px solid #E8D8C3;
+  font-size: 0.9rem;
+}
+.admin-table tr:hover td {
+  background: #F2E8D9;
+}
+
+/* Badge */
+.badge-alive   { background: #7A8B68; color: white; }
+.badge-deceased { background: #795548; color: white; }
+
+/* Hover states */
+.person-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(74, 44, 32, 0.14);
+}
+.person-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+
+.photo-card:hover .photo-overlay { opacity: 1; }
+.photo-overlay { transition: opacity 0.25s ease; }
+
+/* Mobile menu */
+@media (max-width: 768px) {
+  .nav-desktop { display: none; }
+  .nav-mobile-btn { display: flex; }
+}
+@media (min-width: 769px) {
+  .nav-desktop { display: flex; }
+  .nav-mobile-btn { display: none; }
+}
