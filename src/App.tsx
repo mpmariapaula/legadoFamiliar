@@ -6,14 +6,14 @@ import type { Page, Person } from "@/src/types";
 import { INIT_PEOPLE, INIT_RELATIONSHIPS, INIT_PHOTOS, INIT_MEMORIES, INIT_EVENTS } from "@/src/data/initialData";
 import { Navbar } from "@/src/components/Navbar";
 import { PersonModal } from "@/src/components/PersonModal";
-import { HomePage } from "@/src/pages/HomePage";
-import { PessoasPage } from "@/src/pages/PessoasPage";
-import { ArvorePage } from "@/src/pages/ArvorePage";
-import { FotografiasPage } from "@/src/pages/FotografiasPage";
-import { MemoriasPage } from "@/src/pages/MemoriasPage";
-import { AcontecimentosPage } from "@/src/pages/AcontecimentosPage";
-import { NossaHistoriaPage } from "@/src/pages/NossaHistoriaPage";
-import { AdminPage } from "@/src/pages/admin/AdminPage";
+import { HomePage } from "@/src/views/HomePage";
+import { PessoasPage } from "@/src/views/PessoasPage";
+import { ArvorePage } from "@/src/views/ArvorePage";
+import { FotografiasPage } from "@/src/views/FotografiasPage";
+import { MemoriasPage } from "@/src/views/MemoriasPage";
+import { AcontecimentosPage } from "@/src/views/AcontecimentosPage";
+import { NossaHistoriaPage } from "@/src/views/NossaHistoriaPage";
+import { AdminPage } from "@/src/views/admin/AdminPage";
 
 const PAGE_PATHS: Record<Page, string> = {
   home: "/",

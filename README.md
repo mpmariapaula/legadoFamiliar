@@ -14,8 +14,8 @@ Abra http://localhost:3000.
 ## Estrutura
 
 - `app/`: layout, estilos globais e entrada de rotas do Next.js.
-- `src/pages/`: componentes que representam as telas do produto.
-- `src/pages/admin/`: tela administrativa e formulários.
+- `src/views/`: componentes que representam as telas do produto.
+- `src/views/admin/`: tela administrativa e formulários.
 - `src/components/`: componentes reutilizáveis.
 - `src/types/`: tipos TypeScript compartilhados.
 - `src/data/`: dados de demonstração.

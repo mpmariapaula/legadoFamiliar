@@ -1,3 +1,5 @@
+import type { Person } from "../types";
+
 export function formatYear(dateStr?: string) {
   if (!dateStr) return "";
   return dateStr.slice(0, 4);

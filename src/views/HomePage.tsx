@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import type { Person, Photo, Memory, FamilyEvent, Page } from "@/src/types";
 import { PersonCard } from "@/src/components/PersonCard";
 import { formatDate, formatYear, lifespan } from "@/src/utils/date";
+import Image from "next/image";
 
 export function HomePage({
   people, photos, memories, events, onNavigate, onOpenPerson
@@ -27,10 +28,11 @@ export function HomePage({
         />
         {/* Photo collage bg */}
         <div className="absolute inset-0 opacity-20">
-          <img
-            src="https://images.unsplash.com/photo-1542216515-4e6a586c1ca0?w=1400&h=900&fit=crop&auto=format"
+          <Image
+            src="/image.png"
             alt=""
-            className="w-full h-full object-cover"
+            fill
+            className="object-cover"
           />
         </div>
         <div className="absolute inset-0 bg-brown-dark/40" />
