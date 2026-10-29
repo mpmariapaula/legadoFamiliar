@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import type { Page, Person } from "@/src/types";
 import { INIT_PEOPLE, INIT_RELATIONSHIPS, INIT_PHOTOS, INIT_MEMORIES, INIT_EVENTS } from "@/src/data/initialData";
@@ -14,6 +14,8 @@ import { MemoriasPage } from "@/src/views/MemoriasPage";
 import { AcontecimentosPage } from "@/src/views/AcontecimentosPage";
 import { NossaHistoriaPage } from "@/src/views/NossaHistoriaPage";
 import { AdminPage } from "@/src/views/admin/AdminPage";
+import { buscarPessoas, supabase } from "@/src/lib/supabase";
+import { LoginForm } from "@/src/components/admin/LoginForm";
 
 const PAGE_PATHS: Record<Page, string> = {
   home: "/",
@@ -35,12 +37,51 @@ export default function App() {
   const router = useRouter();
   const pathname = usePathname();
   const page = pageFromPath(pathname);
-  const [people, setPeople] = useState<Person[]>(INIT_PEOPLE);
   const [relationships, setRelationships] = useState(INIT_RELATIONSHIPS);
   const [photos] = useState(INIT_PHOTOS);
   const [memories, setMemories] = useState(INIT_MEMORIES);
   const [events, setEvents] = useState(INIT_EVENTS);
   const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
+  const [people, setPeople] = useState<Person[]>(INIT_PEOPLE);
+  const [adminAutenticado, setAdminAutenticado] = useState(false);
+  const [verificandoSessao, setVerificandoSessao] = useState(true);
+
+
+  useEffect(() => {
+    buscarPessoas()
+      .then((dados) => {
+        if (dados.length > 0) {
+          setPeople(dados);
+        }
+      })
+      .catch((erro) => {
+        console.error("Não foi possível carregar as pessoas:", erro);
+      });
+  }, []);
+
+  useEffect(() => {
+    async function verificarSessao() {
+      try {
+        const { data } = await supabase.auth.getSession();
+        const usuario = data.session?.user;
+
+        if (!usuario) {
+          setAdminAutenticado(false);
+          return;
+        }
+
+        const { data: isAdmin, error } = await supabase.rpc("is_admin");
+
+        setAdminAutenticado(!error && isAdmin === true);
+      } catch {
+        setAdminAutenticado(false);
+      } finally {
+        setVerificandoSessao(false);
+      }
+    }
+
+    verificarSessao();
+  }, []);
 
   function navigate(nextPage: Page) {
     const nextPath = PAGE_PATHS[nextPage];
@@ -63,8 +104,27 @@ export default function App() {
       {page === "fotografias" && <FotografiasPage photos={photos} people={people} />}
       {page === "memorias" && <MemoriasPage memories={memories} people={people} />}
       {page === "acontecimentos" && <AcontecimentosPage events={events} people={people} />}
-      {page === "admin" && <AdminPage people={people} relationships={relationships} photos={photos} memories={memories} events={events} setPeople={setPeople} setRelationships={setRelationships} setMemories={setMemories} setEvents={setEvents} />}
-      {selectedPerson && <PersonModal person={selectedPerson} people={people} relationships={relationships} photos={photos} memories={memories} events={events} onClose={() => setSelectedPerson(null)} onNavigate={navigateToPerson} />}
-    </div>
-  );
+      {page === "admin" && !adminAutenticado && (
+        <LoginForm
+          onLogin={() => setAdminAutenticado(true)}
+          onCancel={() => navigate("home")}
+        />
+      )}
+
+      {page === "admin" && !verificandoSessao && adminAutenticado && (
+        <AdminPage
+          people={people}
+          relationships={relationships}
+          photos={photos}
+          memories={memories}
+          events={events}
+          setPeople={setPeople}
+          setRelationships={setRelationships}
+          setMemories={setMemories}
+          setEvents={setEvents}
+        />
+      )}
+    {selectedPerson && <PersonModal person={selectedPerson} people={people} relationships={relationships} photos={photos} memories={memories} events={events} onClose={() => setSelectedPerson(null)} onNavigate={navigateToPerson} />}
+   </div>
+      );
 }

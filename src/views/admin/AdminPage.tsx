@@ -3,6 +3,8 @@ import type { Dispatch, SetStateAction } from "react";
 import type { Person, Relationship, Photo, Memory, FamilyEvent, AdminSection } from "@/src/types";
 import { formatDate, formatYear, lifespan } from "@/src/utils/date";
 import { PersonForm, RelationshipForm, MemoryForm, EventForm } from "@/src/components/admin/Forms";
+import { salvarPessoa } from "@/src/lib/supabase";
+import { supabase } from "@/src/lib/supabase";
 
 export function AdminPage({
   people, relationships, photos, memories, events,
@@ -15,6 +17,10 @@ export function AdminPage({
   setEvents: Dispatch<SetStateAction<FamilyEvent[]>>;
 }) {
   const [section, setSection] = useState<AdminSection>("dashboard");
+  async function sair() {
+    await supabase.auth.signOut();
+    window.location.href = "/";
+  }
   const [showPersonForm, setShowPersonForm] = useState(false);
   const [editPerson, setEditPerson] = useState<Person | null>(null);
   const [showRelForm, setShowRelForm] = useState(false);
@@ -46,12 +52,15 @@ export function AdminPage({
     { key: "relacionamentos", label: "Relacionamentos" },
     { key: "memorias", label: "Memórias" },
     { key: "eventos", label: "Acontecimentos" },
+    { key: "fotografias", label: "Fotografias" },
   ];
 
   return (
     <div className="page-enter max-w-7xl mx-auto px-6 py-12">
-      <div className="ornament mb-8">
-        <h1 className="font-serif text-4xl text-brown-dark px-4">Administração</h1>
+      <div className="ornament mb-8 flex items-center justify-between">
+        <h1 className="font-serif text-4xl text-brown-dark px-4">
+          Administração
+        </h1>
       </div>
 
       {/* Confirm dialog */}
@@ -88,15 +97,28 @@ export function AdminPage({
         {/* Sidebar */}
         <div className="lg:w-48 shrink-0">
           <div className="card-frame overflow-hidden">
-            {SECTIONS.map(s => (
+            {SECTIONS.map((s) => (
               <button
                 key={s.key}
                 onClick={() => setSection(s.key)}
-                className={`block w-full text-left px-4 py-3 font-sans text-sm border-b border-beige last:border-0 transition-colors ${section === s.key ? "bg-brown-dark text-cream" : "text-brown-mid hover:bg-parchment"}`}
+                className={`block w-full text-left px-4 py-3 font-sans text-sm border-b border-beige last:border-0 transition-colors ${
+                  section === s.key
+                    ? "bg-brown-dark text-cream"
+                    : "text-brown-mid hover:bg-parchment"
+                }`}
               >
                 {s.label}
               </button>
-            ))}
+              ))}
+
+              <button
+                type="button"
+                onClick={sair}
+                className="block w-full text-left px-4 py-3 font-sans text-sm text-red-700 hover:bg-parchment transition-colors mt-4 border-t border-beige"
+              >
+                Sair
+              </button>
+
           </div>
         </div>
 
@@ -114,6 +136,7 @@ export function AdminPage({
                   { label: "Relacionamentos", value: relationships.length, color: "bg-terracotta" },
                   { label: "Memórias", value: memories.length, color: "bg-sage" },
                   { label: "Acontecimentos", value: events.length, color: "bg-caramel" },
+                  { label: "Fotografias", value: photos.length, color: "bg-caramel" },
                 ].map(s => (
                   <div key={s.label} className={`${s.color} text-cream rounded-sm p-5`}>
                     <div className="font-serif text-4xl">{s.value}</div>
@@ -162,15 +185,33 @@ export function AdminPage({
               {showPersonForm && (
                 <PersonForm
                   initial={editPerson}
-                  onSave={(data) => {
-                    if (editPerson) {
-                      setPeople(prev => prev.map(p => p.id === editPerson.id ? { ...p, ...data } : p));
-                    } else {
-                      const newId = Math.max(0, ...people.map(p => p.id)) + 1;
-                      setPeople(prev => [...prev, { id: newId, ...data }]);
+                  onSave={async (data) => {
+                    try {
+                      const pessoaSalva = await salvarPessoa(
+                        data,
+                        editPerson?.id
+                      );
+
+                      if (editPerson) {
+                        setPeople(prev =>
+                          prev.map(p =>
+                            p.id === editPerson.id ? pessoaSalva : p
+                          )
+                        );
+                      } else {
+                        setPeople(prev => [...prev, pessoaSalva]);
+                      }
+
+                      setShowPersonForm(false);
+                      setEditPerson(null);
+                    } catch (erro) {
+                      console.error("Erro ao salvar pessoa:", erro);
+                      alert(
+                        erro instanceof Error
+                          ? erro.message
+                          : "Não foi possível salvar a pessoa."
+                      );
                     }
-                    setShowPersonForm(false);
-                    setEditPerson(null);
                   }}
                   onCancel={() => { setShowPersonForm(false); setEditPerson(null); }}
                 />
@@ -370,6 +411,31 @@ export function AdminPage({
               </div>
             </div>
           )}
+          <div>
+            <h2 className="font-serif text-2xl text-brown-dark">Fotografias</h2>
+            <div className="card-frame overflow-hidden">
+              <table className="admin-table w-full">
+                <thead>
+                  <tr><th>Título</th><th>Data</th><th>Autor</th><th>Ações</th></tr>
+                </thead>
+                <tbody>
+                  {photos.map(p => (
+                    <tr key={p.id}>
+                      <td className="font-serif text-brown-dark">{p.title}</td>
+                      <td className="text-caramel">{p.date || "—"}</td>
+                      <td className="text-brown-mid">{p.author || "—"}</td>
+                      <td>
+                        <button
+                          onClick={() => setConfirm({ type: "photo", id: p.id })}
+                          className="text-xs text-red-600 hover:text-red-800 font-sans"
+                        >Excluir</button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
     </div>
